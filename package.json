@@ -1,0 +1,141 @@
+{
+  "name": "code-term-snap",
+  "displayName": "CodeTermSnap",
+  "description": "Take screenshots of code selections with a CodeTermSnap preview panel.",
+  "version": "0.1.0",
+  "publisher": "ryan-rui-liu",
+  "engines": {
+    "vscode": "^1.86.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "vscode",
+    "screenshot",
+    "code",
+    "terminal",
+    "clipboard"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codetermsnap.capture",
+        "title": "CodeTermSnap",
+        "category": "CodeTermSnap"
+      },
+      {
+        "command": "codetermsnap.openSettings",
+        "title": "Open Extension Settings",
+        "category": "CodeTermSnap"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "codetermsnap.capture",
+          "group": "zz_codetermsnap@0"
+        }
+      ],
+      "webview/context": [
+        {
+          "command": "codetermsnap.openSettings",
+          "group": "navigation@0",
+          "when": "webviewId == 'codetermsnap' && webviewSection == 'preview'"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CodeTermSnap",
+      "properties": {
+        "codetermsnap.backgroundColor": {
+          "type": "string",
+          "default": "transparent",
+          "description": "Background color of the preview canvas outside the code window."
+        },
+        "codetermsnap.boxShadow": {
+          "type": "string",
+          "default": "rgba(0, 0, 0, 0.12) 0px 0px 12px",
+          "description": "CSS box-shadow for the snippet window."
+        },
+        "codetermsnap.containerPadding": {
+          "type": "string",
+          "default": "16px",
+          "description": "Padding inside the screenshot container."
+        },
+        "codetermsnap.fontSize": {
+          "type": "number",
+          "default": 0,
+          "description": "Font size in pixels. Use 0 to fall back to the editor font size, then the terminal font size."
+        },
+        "codetermsnap.roundedCorners": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use rounded corners for the snippet window."
+        },
+        "codetermsnap.showWindowControls": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show the window control dots."
+        },
+        "codetermsnap.showWindowTitle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the window title."
+        },
+        "codetermsnap.showLineNumbers": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show line numbers in the screenshot."
+        },
+        "codetermsnap.realLineNumbers": {
+          "type": "boolean",
+          "default": false,
+          "description": "Start line numbers from the file's real line number."
+        },
+        "codetermsnap.transparentBackground": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use a transparent background when taking the screenshot."
+        },
+        "codetermsnap.target": {
+          "type": "string",
+          "enum": [
+            "container",
+            "window"
+          ],
+          "default": "container",
+          "description": "Capture the full preview container by default so the exported PNG matches the on-screen preview."
+        },
+        "codetermsnap.shutterAction": {
+          "type": "string",
+          "enum": [
+            "save",
+            "copy"
+          ],
+          "default": "save",
+          "description": "Save the screenshot to a file or copy it to the clipboard."
+        }
+      }
+    }
+  },
+  "vsce": {
+    "packageManager": "pnpm"
+  },
+  "scripts": {
+    "compile": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "package": "pnpm compile && vsce package --no-dependencies --allow-missing-repository"
+  },
+  "dependencies": {
+    "html-to-image": "^1.11.13"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "@types/vscode": "^1.86.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.8.3"
+  }
+}
